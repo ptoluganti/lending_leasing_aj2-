@@ -4,7 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApplication1</title>
-
+    <link href='https://fonts.googleapis.com/css?family=Lato:700,400,100,200,300' rel='stylesheet' type='text/css'>
+    
+    <script src="~/lib/angular2/es6-shim.min.js"></script>
+    <script src="~/lib/angular2/es6-shim.min.js"></script>
+    <script src="~/lib/angular2/system-polyfills.js"></script>
+    <script src="~/lib/angular2/angular2-polyfills.js"></script>
+    <script src="~/lib/angular2/system.src.js"></script>
+    <script src="~/lib/angular2/Rx.js"></script>
+    <script src="~/lib/angular2/angular2.dev.js"></script>
+    <script>
+      System.config({
+        packages: {
+          js: {
+            format: 'register',
+            defaultExtension: 'js'
+          }
+        }
+      });
+      System.import('js/site')
+        .then(null, console.error.bind(console));
+    </script>
 
 </head>
 <body>
