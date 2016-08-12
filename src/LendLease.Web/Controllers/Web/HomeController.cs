@@ -12,4 +12,11 @@ namespace LendLease.Web.Controllers.Web
             return View();
         }
     }
+
+    public class PartialController : Controller
+    {
+        // GET: /<controller>/
+        public IActionResult Message() => PartialView();
+    }
+
 }
