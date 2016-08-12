@@ -2,8 +2,10 @@
 
 @Component({
     selector: 'app',
-    template: '<h1>My First Angular 2 App</h1>'
+    templateUrl: "/partial/message"
+    //template: '<h1>My First Angular 2 App</h1>'
 })
 export class AppComponent {
-    
+    message: string = "Test message";
+
 }
