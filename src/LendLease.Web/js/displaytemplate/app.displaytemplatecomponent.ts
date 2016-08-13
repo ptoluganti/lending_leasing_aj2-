@@ -8,13 +8,7 @@ import { ITileViewModel } from "../customer/tilecomponent";
 export class DisplayTemplateComponent implements OnInit {
 
     @Input()
-    tile: {
-        title: string,
-        value: number,
-        url: string,
-        iconCssClass: string,
-        colorCssClass: string
-    };
+    tile: ITileViewModel;
 
     constructor() {
 
