@@ -1,5 +1,5 @@
 ﻿import {Component, Input, OnInit} from "angular2/core";
-import { ITileViewModel } from "../customer/icustomer";
+import { ITileViewModel } from "../customer/tilecomponent";
 
 @Component({
     selector: "displaytemplate",

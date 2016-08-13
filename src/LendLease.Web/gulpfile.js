@@ -87,7 +87,8 @@ gulp.task('typescript', function () {
       .src([
           'js/site.js',
           "js/app.component.js",
-          "js/customer/ICustomer.js",
+          "js/customer/customercomponent.js",
+          "js/customer/tilecomponent.js",
           "js/displaytemplate/app.displaytemplatecomponent.js"
       ])
       .pipe(gulp.dest('wwwroot/js'));

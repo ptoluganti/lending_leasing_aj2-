@@ -1,4 +1,4 @@
-﻿
+﻿@model LendLease.Web.ViewModels.DashboardViewModel
 
 <div>{{message}}</div>
 
@@ -6,5 +6,5 @@
     <displaytemplate [tile]="customerCountTile"> Loading...</displaytemplate>
     <displaytemplate [tile]="scheduledPaymentCountTile"> Loading...</displaytemplate>
     <displaytemplate [tile]="paymentRecievedCountTile"> Loading...</displaytemplate>
-    <displaytemplate [tile]="paymentOverdueCountTile"> Loading...</displaytemplate>
+    @Html.DisplayFor(m => m.PaymentOverdueCountTile)
 </div>
