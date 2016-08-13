@@ -11,11 +11,3 @@ export interface ITileViewModel {
     iconCssClass: string;
     colorCssClass: string;
 }
-
-export interface IDashboardViewModel {
-
-    customerCountTile: ITileViewModel;
-    scheduledPaymentCountTile: ITileViewModel;
-    paymentRecievedCountTile: ITileViewModel;
-    paymentOverdueCountTile: ITileViewModel;
-}

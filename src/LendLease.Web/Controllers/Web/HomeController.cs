@@ -17,6 +17,7 @@ namespace LendLease.Web.Controllers.Web
     {
         // GET: /<controller>/
         public IActionResult Message() => PartialView();
+        public IActionResult Displaytemplate() => PartialView();
     }
 
 }

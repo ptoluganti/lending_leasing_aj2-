@@ -3,26 +3,8 @@
 <div>{{message}}</div>
 
 <div class="row">
-    <div class="col-lg-3 col-md-6">
-        <div [class]="dashboardViewModel.customerCountTile.colorCssClass">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i [class]="dashboardViewModel.customerCountTile.iconCssClass"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">{{ dashboardViewModel.customerCountTile.value }}</div>
-                        <div>{{dashboardViewModel.customerCountTile.title }}</div>
-                    </div>
-                </div>
-            </div>
-            <a href="{{ dashboardViewModel.customerCountTile.url }}">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
+    <displaytemplate [tile]="customerCountTile"> Loading...</displaytemplate>
+    <displaytemplate [tile]="scheduledPaymentCountTile"> Loading...</displaytemplate>
+    <displaytemplate [tile]="paymentRecievedCountTile"> Loading...</displaytemplate>
+    <displaytemplate [tile]="paymentOverdueCountTile"> Loading...</displaytemplate>
 </div>
