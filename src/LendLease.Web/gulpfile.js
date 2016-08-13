@@ -1,4 +1,5 @@
-﻿/// <reference path="js/site.js" />
+﻿/// <reference path="js/customer/icustomer.js" />
+/// <reference path="js/site.js" />
 /// <reference path="js/site.js" />
 /*
 This file in the main entry point for defining Gulp tasks and using Gulp plugins.
@@ -85,7 +86,8 @@ gulp.task('typescript', function () {
     return gulp
       .src([
           'js/site.js',
-          "js/app.component.js"
+          "js/app.component.js",
+          "js/customer/ICustomer.js"
       ])
       .pipe(gulp.dest('wwwroot/js'));
 });

@@ -1,23 +1,48 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Lend Lease</title>
-    <link href='https://fonts.googleapis.com/css?family=Lato:700,400,100,200,300' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:700,400,100,200,300" rel="stylesheet" type="text/css">
 
     <environment names="Development">
-        <link asp-href-include="~/css/*.css" rel="stylesheet" />
+        <link asp-href-include="~/css/*.css" rel="stylesheet"/>
     </environment>
     <environment names="Staging, Production">
-        <link href="~/css/min/site.min.css" rel="stylesheet" />
+        <link href="~/css/min/site.min.css" rel="stylesheet"/>
     </environment>
 
-   
 
 </head>
 <body>
+    <nav class="navbar navbar-default navbar-static-top"
+         role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">My Lend Lease</div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><span class="fa fa-home"></span> Home</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Customer" asp-action="Index"><span class="fa fa-users"></span> Customers</a>
+                </li>
 
+                <li>
+                    <a href="#"><span class="fa fa-user"></span> Login</a>
+                </li>
+            </ul>
+        </div>
+        @*<img height="50" width="90%" alt="lendlease background"
+            class="pull-right" src="~/images/lendleaseapp.jpg"
+            asp-append-version="true" />*@
+    </nav>
 <div class="container body-content">
     @RenderBody()
     <hr/>
@@ -26,38 +51,38 @@
     </footer>
 </div>
 
-    <environment names="Development">
-        @*<script asp-src-include="~/js/*.js"></script>*@
-        <script asp-src-include="~/lib/jquery.js"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script asp-src-include="~/lib/bootstrap.js"></script>
-        <!-- DataTables JavaScript -->
-        <script asp-src-include="~/lib/jquery.dataTables.js"></script>
-        <script asp-src-include="~/lib/dataTables.bootstrap.js"></script>
+<environment names="Development">
+    @*<script asp-src-include="~/js/*.js"></script>*@
+    <script asp-src-include="~/lib/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script asp-src-include="~/lib/bootstrap.js"></script>
+    <!-- DataTables JavaScript -->
+    <script asp-src-include="~/lib/jquery.dataTables.js"></script>
+    <script asp-src-include="~/lib/dataTables.bootstrap.js"></script>
 
-        <script asp-src-include="~/lib/angular2/es6-shim.min.js"></script>
-        <script asp-src-include="~/lib/angular2/es6-shim.min.js"></script>
-        <script asp-src-include="~/lib/angular2/system-polyfills.js"></script>
-        <script asp-src-include="~/lib/angular2/angular2-polyfills.js"></script>
-        <script asp-src-include="~/lib/angular2/system.src.js"></script>
-        <script asp-src-include="~/lib/angular2/Rx.js"></script>
-        <script asp-src-include="~/lib/angular2/angular2.dev.js"></script>
-        <script>
-      System.config({
-        packages: {
-          js: {
-            format: 'register',
-            defaultExtension: 'js'
-          }
-        }
-      });
-      System.import('js/site')
-        .then(null, console.error.bind(console));
-        </script>
-    </environment>
-    <environment names="Staging, Production">
-        <script src="~/js/min/site.min.js"></script>
-    </environment>
+    <script asp-src-include="~/lib/angular2/es6-shim.min.js"></script>
+    <script asp-src-include="~/lib/angular2/es6-shim.min.js"></script>
+    <script asp-src-include="~/lib/angular2/system-polyfills.js"></script>
+    <script asp-src-include="~/lib/angular2/angular2-polyfills.js"></script>
+    <script asp-src-include="~/lib/angular2/system.src.js"></script>
+    <script asp-src-include="~/lib/angular2/Rx.js"></script>
+    <script asp-src-include="~/lib/angular2/angular2.dev.js"></script>
+    <script>
+        System.config({
+            packages: {
+                js: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            }
+        });
+        System.import('js/site')
+            .then(null, console.error.bind(console));
+    </script>
+</environment>
+<environment names="Staging, Production">
+    <script src="~/js/min/site.min.js"></script>
+</environment>
 
 @RenderSection("scripts", required: false)
 </body>
