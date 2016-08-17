@@ -36,6 +36,7 @@ namespace LendLease.Web
 
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
+            services.AddSingleton<IPaymentRepository, PaymentRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +50,7 @@ namespace LendLease.Web
                 {
                     context.Customers.Add(new Customer {Name = "Test Customer 1"});
                     context.Addresses.Add(new Address {Name = "Address 1", CustomerId = 1});
-                    context.PaymentInfos.Add(new PaymentInfo
+                    context.Payments.Add(new Payment
                     {
                         Name = "Payment 1",
                         AddressId = 1,

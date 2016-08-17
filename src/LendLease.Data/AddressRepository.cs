@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using LendLease.Interfaces;
 using LendLease.Models;
-using System.Linq;
 
 namespace LendLease.Data
 {
@@ -13,6 +13,7 @@ namespace LendLease.Data
         {
             _context = context;
         }
+
         public void Add(Address item)
         {
             _context.Addresses.Add(item);
@@ -46,8 +47,8 @@ namespace LendLease.Data
 
         public void Update(Address item)
         {
-            var customer = _context.Addresses.FirstOrDefault(c => c.Id == item.Id);
-            customer.Name = item.Name;
+            var address = _context.Addresses.FirstOrDefault(c => c.Id == item.Id);
+            address.Name = item.Name;
             _context.SaveChanges();
         }
     }

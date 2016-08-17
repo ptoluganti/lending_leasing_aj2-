@@ -2,7 +2,7 @@
 
 namespace LendLease.Models
 {
-    public class PaymentInfo
+    public class Payment
     {
         public int Id { get; set; }
 

@@ -1,14 +1,19 @@
-﻿namespace LendLease.Models
+﻿using System.Collections.Generic;
+
+namespace LendLease.Models
 {
     public class Address
     {
+        public Address()
+        {
+            Payments = new HashSet<Payment>();
+        }
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-
-        public PaymentInfo PaymentInfo { get; set; }
+        public ICollection<Payment> Payments { get; set; }
     }
 }
