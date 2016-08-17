@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using LendLease.Web;
 using Microsoft.AspNetCore.Hosting;
@@ -21,19 +22,35 @@ namespace LendLease.Tests
         private readonly TestServer _server;
         private readonly HttpClient _client;
 
+        //[Fact]
+        //public async Task ReturnHelloWorld()
+        //{
+        //    // Act
+        //    var response = await _client.GetAsync("/api/Customers");
+        //    response.EnsureSuccessStatusCode();
+
+        //    var responseString = await response.Content.ReadAsStringAsync();
+
+
+        //    // Assert
+        //    var expectedString = JsonConvert.SerializeObject(new[] {"value1", "value2"});
+        //    Assert.Equal(expectedString, responseString);
+        //}
+
+
         [Fact]
-        public async Task ReturnHelloWorld()
+        public async Task ReturnCustomers()
         {
             // Act
-            var response = await _client.GetAsync("/api/Customers");
+            var request = "/api/customers";
+            var response = await _client.GetAsync(request);
             response.EnsureSuccessStatusCode();
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
+            //var customers = await response.Content.ReadAsAsync<Customer[]>();
 
             // Assert
-            var expectedString = JsonConvert.SerializeObject(new[] {"value1", "value2"});
-            Assert.Equal(expectedString, responseString);
+            Assert.NotNull(response.Content);
+            Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

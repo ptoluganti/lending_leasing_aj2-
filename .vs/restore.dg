@@ -1,2 +1,11 @@
 #:C:\VsProjects\LendLease\test\LendLease.Tests.xproj
+C:\VsProjects\LendLease\test\LendLease.Tests.xproj|C:\VsProjects\LendLease\src\LendLease.Data\LendLease.Data.xproj
+C:\VsProjects\LendLease\test\LendLease.Tests.xproj|C:\VsProjects\LendLease\src\LendLease.Interfaces\LendLease.Interfaces.xproj
+C:\VsProjects\LendLease\test\LendLease.Tests.xproj|C:\VsProjects\LendLease\src\LendLease.Models\LendLease.Models.xproj
 C:\VsProjects\LendLease\test\LendLease.Tests.xproj|C:\VsProjects\LendLease\src\LendLease.Web\LendLease.Web.xproj
+C:\VsProjects\LendLease\src\LendLease.Data\LendLease.Data.xproj|C:\VsProjects\LendLease\src\LendLease.Interfaces\LendLease.Interfaces.xproj
+C:\VsProjects\LendLease\src\LendLease.Data\LendLease.Data.xproj|C:\VsProjects\LendLease\src\LendLease.Models\LendLease.Models.xproj
+C:\VsProjects\LendLease\src\LendLease.Interfaces\LendLease.Interfaces.xproj|C:\VsProjects\LendLease\src\LendLease.Models\LendLease.Models.xproj
+C:\VsProjects\LendLease\src\LendLease.Web\LendLease.Web.xproj|C:\VsProjects\LendLease\src\LendLease.Data\LendLease.Data.xproj
+C:\VsProjects\LendLease\src\LendLease.Web\LendLease.Web.xproj|C:\VsProjects\LendLease\src\LendLease.Interfaces\LendLease.Interfaces.xproj
+C:\VsProjects\LendLease\src\LendLease.Web\LendLease.Web.xproj|C:\VsProjects\LendLease\src\LendLease.Models\LendLease.Models.xproj

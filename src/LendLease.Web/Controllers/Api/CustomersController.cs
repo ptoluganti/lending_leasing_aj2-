@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using LendLease.Interfaces;
+using LendLease.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LendLease.Web.Controllers.Api
@@ -6,36 +8,89 @@ namespace LendLease.Web.Controllers.Api
     [Route("api/[controller]")]
     public class CustomersController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomersController(ICustomerRepository customerRepository)
         {
-            return new string[] { "value1", "value2" };
+            _customerRepository = customerRepository;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        public IEnumerable<Customer> GetAll()
         {
-            return "value";
+            return _customerRepository.GetAll();
         }
 
-        // POST api/values
+        [HttpGet("{id}", Name = "GetCustomer")]
+        public IActionResult GetById(int id)
+        {
+            var item = _customerRepository.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(item);
+        }
+
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Create([FromBody] Customer item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            _customerRepository.Add(item);
+            return CreatedAtRoute("GetCustomer", new { id = item.Id }, item);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Update(int id, [FromBody] Customer item)
         {
+            if (item == null || item.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var todo = _customerRepository.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            _customerRepository.Update(item);
+            return new NoContentResult();
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPatch("{id}")]
+        public IActionResult Update([FromBody] Customer item, int id)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            var todo = _customerRepository.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            item.Id = todo.Id;
+
+            _customerRepository.Update(item);
+            return new NoContentResult();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var todo = _customerRepository.Find(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            _customerRepository.Remove(id);
+            return new NoContentResult();
         }
     }
 }

@@ -12,3 +12,11 @@
 /src/LendLease.Web/obj/Debug/netcoreapp1.0
 /src/LendLease.Web/node_modules
 /src/LendLease.Web/typings
+/src/LendLease.Data/bin/Debug
+/src/LendLease.Data/obj/Debug
+/src/LendLease.Interfaces/bin/Debug
+/src/LendLease.Interfaces/obj/Debug
+/src/LendLease.Models/bin/Debug
+/src/LendLease.Models/obj/Debug
+/src/LendLease.Web/bin
+/src/LendLease.Web/obj/Release/netcoreapp1.0
