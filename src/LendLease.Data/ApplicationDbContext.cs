@@ -8,7 +8,7 @@ namespace LendLease.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Customer> Customers { get; set; }
-        //public DbSet<Address> Addresses { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         //public DbSet<PaymentInfo> PaymentInfos { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

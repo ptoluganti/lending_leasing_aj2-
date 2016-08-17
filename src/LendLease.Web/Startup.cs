@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LendLease.Data;
 using LendLease.Interfaces;
+using LendLease.Models;
 using LendLease.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,19 +34,32 @@ namespace LendLease.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
+            services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
 
-            // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true; // false by default
+            });
 
-            services.AddScoped<IViewModelService, ViewModelService>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton<IAddressRepository, AddressRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            if (env.IsEnvironment("Test"))
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseInMemoryDatabase();
+                using (var context = new ApplicationDbContext(optionsBuilder.Options))
+                {
+                    context.Customers.Add(new Customer { Name = "Test Customer 1" });
+                    context.Addresses.Add(new Address() { Name = "Address 1", CustomerId = 1 });
+                    context.SaveChanges();
+                }
+            }
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

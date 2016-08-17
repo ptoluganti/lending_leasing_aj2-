@@ -15,9 +15,9 @@ namespace LendLease.Web.Controllers.Api
             _customerRepository = customerRepository;
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IActionResult GetAll()
         {
-            return _customerRepository.GetAll();
+            return new ObjectResult(_customerRepository.GetAll());
         }
 
         [HttpGet("{id}", Name = "GetCustomer")]
@@ -50,8 +50,8 @@ namespace LendLease.Web.Controllers.Api
                 return BadRequest();
             }
 
-            var todo = _customerRepository.Find(id);
-            if (todo == null)
+            var customer = _customerRepository.Find(id);
+            if (customer == null)
             {
                 return NotFound();
             }
@@ -68,28 +68,15 @@ namespace LendLease.Web.Controllers.Api
                 return BadRequest();
             }
 
-            var todo = _customerRepository.Find(id);
-            if (todo == null)
+            var customer = _customerRepository.Find(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            item.Id = todo.Id;
+            item.Id = customer.Id;
 
             _customerRepository.Update(item);
-            return new NoContentResult();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var todo = _customerRepository.Find(id);
-            if (todo == null)
-            {
-                return NotFound();
-            }
-
-            _customerRepository.Remove(id);
             return new NoContentResult();
         }
     }
