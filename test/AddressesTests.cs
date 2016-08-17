@@ -1,44 +1,21 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using LendLease.Models;
-using LendLease.Web;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace LendLease.Tests
 {
-    public class AddressesTests : IDisposable
+    public class AddressesTests : TestBase
     {
-        public AddressesTests()
-        {
-            // Arrange
-            _server = new TestServer(new WebHostBuilder()
-                .UseEnvironment("Test")
-                .UseStartup<Startup>());
-            _client = _server.CreateClient();
-        }
-
-
-        public void Dispose()
-        {
-            _server.Dispose();
-            _client.Dispose();
-        }
-
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
-
         private Address[] _addresses;
         private Address _address;
 
         private async Task<HttpResponseMessage> GetAllAddressesForCustomer(int id)
         {
             var requestUrl = string.Format("/api/addresses/customer/{0}", id);
-            var response = await _client.GetAsync(requestUrl);
+            var response = await Client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             _addresses = await response.Content.ReadAsAsync<Address[]>();
             return response;
@@ -47,7 +24,7 @@ namespace LendLease.Tests
         private async Task<HttpResponseMessage> GetAllAddressesForCustomer(int cid, int id)
         {
             var requestUrl = string.Format("/api/addresses/{0}/customer/{1}", id, cid);
-            var response = await _client.GetAsync(requestUrl);
+            var response = await Client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             _address = await response.Content.ReadAsAsync<Address>();
             return response;
@@ -56,7 +33,7 @@ namespace LendLease.Tests
         private async Task<HttpResponseMessage> CreateAddress(Address address)
         {
             var request = "/api/addresses";
-            var response = await _client.PostAsJsonAsync(request, address);
+            var response = await Client.PostAsJsonAsync(request, address);
             response.EnsureSuccessStatusCode();
 
             _address = await response.Content.ReadAsAsync<Address>();
@@ -71,7 +48,7 @@ namespace LendLease.Tests
             {
                 Content = content
             };
-            var response = await _client.SendAsync(request);
+            var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
             return response;
@@ -81,7 +58,7 @@ namespace LendLease.Tests
         {
             var requestUrl = string.Format("/api/addresses/{0}", id);
             var request = new HttpRequestMessage(new HttpMethod("DELETE"), requestUrl);
-            var response = await _client.SendAsync(request);
+            var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
             return response;
@@ -161,7 +138,7 @@ namespace LendLease.Tests
             var after = _addresses.Length;
 
             // Assert
-            Assert.Equal(before -1, after);
+            Assert.Equal(before - 1, after);
             Assert.NotEqual(0, _addresses.Length);
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }

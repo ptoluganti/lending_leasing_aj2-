@@ -1,42 +1,24 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using LendLease.Models;
-using LendLease.Web;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace LendLease.Tests
 {
-    public class CustomersTests : IDisposable
+    public class CustomersTests : TestBase
     {
-        public CustomersTests()
-        {
-            // Arrange
-            _server = new TestServer(new WebHostBuilder()
-                .UseEnvironment("Test")
-                .UseStartup<Startup>());
-            _client = _server.CreateClient();
-        }
-        public void Dispose()
-        {
-            _server.Dispose();
-            _client.Dispose();
-        }
+        
 
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
-
+        
         private Customer[] _customers;
         private Customer _customer;
 
         private async Task<HttpResponseMessage> GetAllCustomers()
         {
             var request = "/api/customers";
-            var response = await _client.GetAsync(request);
+            var response = await Client.GetAsync(request);
             response.EnsureSuccessStatusCode();
             _customers = await response.Content.ReadAsAsync<Customer[]>();
             return response;
@@ -45,7 +27,7 @@ namespace LendLease.Tests
         private async Task<HttpResponseMessage> CreateCustomer(Customer custome)
         {
             var request = "/api/customers";
-            var response = await _client.PostAsJsonAsync(request, custome);
+            var response = await Client.PostAsJsonAsync(request, custome);
             response.EnsureSuccessStatusCode();
 
             _customer = await response.Content.ReadAsAsync<Customer>();
@@ -55,7 +37,7 @@ namespace LendLease.Tests
         private async Task<HttpResponseMessage> GetCustomer(int id)
         {
             var requestUrl = string.Format("/api/customers/{0}", id);
-            var response = await _client.GetAsync(requestUrl);
+            var response = await Client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             _customer = await response.Content.ReadAsAsync<Customer>();
             return response;
@@ -69,7 +51,7 @@ namespace LendLease.Tests
             {
                 Content = content
             };
-            var response = await _client.SendAsync(request);
+            var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
             return response;

@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LendLease.Data;
 using LendLease.Interfaces;
 using LendLease.Models;
-using LendLease.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 
 namespace LendLease.Web
 {
@@ -23,8 +17,8 @@ namespace LendLease.Web
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -36,9 +30,8 @@ namespace LendLease.Web
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
 
-            services.AddMvc(options =>
-            {
-                options.RespectBrowserAcceptHeader = true; // false by default
+            services.AddMvc(options => {
+                                           options.RespectBrowserAcceptHeader = true; // false by default
             });
 
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
@@ -54,8 +47,15 @@ namespace LendLease.Web
                 optionsBuilder.UseInMemoryDatabase();
                 using (var context = new ApplicationDbContext(optionsBuilder.Options))
                 {
-                    context.Customers.Add(new Customer { Name = "Test Customer 1" });
-                    context.Addresses.Add(new Address() { Name = "Address 1", CustomerId = 1 });
+                    context.Customers.Add(new Customer {Name = "Test Customer 1"});
+                    context.Addresses.Add(new Address {Name = "Address 1", CustomerId = 1});
+                    context.PaymentInfos.Add(new PaymentInfo
+                    {
+                        Name = "Payment 1",
+                        AddressId = 1,
+                        ScheduledAmount = 100,
+                        ScheduledDate = DateTime.Today.AddDays(30)
+                    });
                     context.SaveChanges();
                 }
             }
@@ -78,8 +78,8 @@ namespace LendLease.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

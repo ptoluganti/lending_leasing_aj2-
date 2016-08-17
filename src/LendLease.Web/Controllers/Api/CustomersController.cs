@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LendLease.Interfaces;
+﻿using LendLease.Interfaces;
 using LendLease.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +38,7 @@ namespace LendLease.Web.Controllers.Api
                 return BadRequest();
             }
             _customerRepository.Add(item);
-            return CreatedAtRoute("GetCustomer", new { id = item.Id }, item);
+            return CreatedAtRoute("GetCustomer", new {id = item.Id}, item);
         }
 
         [HttpPut("{id}")]

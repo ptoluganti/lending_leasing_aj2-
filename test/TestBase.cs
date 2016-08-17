@@ -6,26 +6,23 @@ using Microsoft.AspNetCore.TestHost;
 
 namespace LendLease.Tests
 {
-    public class ApplicationFixture : IDisposable
+    public abstract class TestBase : IDisposable
     {
-        private readonly TestServer _server;
-
-        public ApplicationFixture()
+        protected TestBase()
         {
             // Arrange
             _server = new TestServer(new WebHostBuilder()
                 .UseEnvironment("Test")
                 .UseStartup<Startup>());
-
             Client = _server.CreateClient();
         }
-
-        public HttpClient Client { get; }
-
         public void Dispose()
         {
-            Client.Dispose();
             _server.Dispose();
+            Client.Dispose();
         }
+
+        private readonly TestServer _server;
+        protected readonly HttpClient Client;
     }
 }
