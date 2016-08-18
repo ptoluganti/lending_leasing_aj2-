@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -14,16 +15,16 @@ namespace LendLease.Tests
 
         private async Task<HttpResponseMessage> GetAllPaymentesForAddress(int id)
         {
-            var requestUrl = string.Format("/api/Paymentes/Address/{0}", id);
+            var requestUrl = string.Format("/api/payments/address/{0}", id);
             var response = await Client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             _payments = await response.Content.ReadAsAsync<Payment[]>();
             return response;
         }
 
-        private async Task<HttpResponseMessage> GetAllPaymentesForAddress(int cid, int id)
+        private async Task<HttpResponseMessage> GetAllPaymentForAddress(int aid, int id)
         {
-            var requestUrl = string.Format("/api/Paymentes/{0}/Address/{1}", id, cid);
+            var requestUrl = string.Format("/api/payments/{0}/address/{1}", id, aid);
             var response = await Client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             _payment = await response.Content.ReadAsAsync<Payment>();
@@ -32,7 +33,7 @@ namespace LendLease.Tests
 
         private async Task<HttpResponseMessage> CreatePayment(Payment payment)
         {
-            var request = "/api/Paymentes";
+            var request = "/api/payments";
             var response = await Client.PostAsJsonAsync(request, payment);
             response.EnsureSuccessStatusCode();
 
@@ -42,7 +43,7 @@ namespace LendLease.Tests
 
         private async Task<HttpResponseMessage> UpdatePayment(Payment payment, string method)
         {
-            var requestUrl = string.Format("/api/Paymentes/{0}", payment.Id);
+            var requestUrl = string.Format("/api/payments/{0}", payment.Id);
             var content = new ObjectContent<Payment>(payment, new JsonMediaTypeFormatter());
             var request = new HttpRequestMessage(new HttpMethod(method), requestUrl)
             {
@@ -56,7 +57,7 @@ namespace LendLease.Tests
 
         private async Task<HttpResponseMessage> RemovedPayment(int id)
         {
-            var requestUrl = string.Format("/api/Paymentes/{0}", id);
+            var requestUrl = string.Format("/api/payments/{0}", id);
             var request = new HttpRequestMessage(new HttpMethod("DELETE"), requestUrl);
             var response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
@@ -69,10 +70,16 @@ namespace LendLease.Tests
         public async Task CreatePayment()
         {
             // Arrange
-            var PaymentName = "Payment 2";
+            var paymentName = "Payment 2";
 
             // Act
-            var response = await CreatePayment(new Payment { Name = PaymentName, AddressId = 1 });
+            var response = await CreatePayment(new Payment
+            {
+                Name = paymentName,
+                AddressId = 1,
+                ScheduledAmount = 100,
+                ScheduledDate = DateTime.Today.AddDays(30)
+            });
 
             await GetAllPaymentesForAddress(1);
 
@@ -80,7 +87,7 @@ namespace LendLease.Tests
             Assert.NotNull(response.Content);
             Assert.Equal(JsonMediaTypeFormatter.DefaultMediaType.MediaType,
                 response.Content.Headers.ContentType.MediaType);
-            Assert.Equal(PaymentName, _payment.Name);
+            Assert.Equal(paymentName, _payment.Name);
             Assert.NotEqual(0, _payment.Id);
             Assert.NotEqual(2, _payments.Length);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -92,11 +99,11 @@ namespace LendLease.Tests
             // Arrange
             var PaymentName = "Payment Put";
             await GetAllPaymentesForAddress(1);
-            var Payment = _payments[0];
-            Payment.Name = PaymentName;
+            var payment = _payments[0];
+            payment.Name = PaymentName;
 
             // Act
-            var response = await UpdatePayment(Payment, "PATCH");
+            var response = await UpdatePayment(payment, "PATCH");
             await GetAllPaymentesForAddress(1);
 
             // Assert
@@ -112,11 +119,11 @@ namespace LendLease.Tests
             var PaymentName = "Payment Put";
 
             await GetAllPaymentesForAddress(1);
-            var Payment = _payments[0];
-            Payment.Name = PaymentName;
+            var payment = _payments[0];
+            payment.Name = PaymentName;
 
             // Act
-            var response = await UpdatePayment(Payment, "PUT");
+            var response = await UpdatePayment(payment, "PUT");
             await GetAllPaymentesForAddress(1);
 
             // Assert
@@ -128,12 +135,18 @@ namespace LendLease.Tests
         public async Task RemovePayment()
         {
             // Arrange
-            await CreatePayment(new Payment { Name = "Test Payment", AddressId = 1 });
-            await GetAllPaymentesForAddress(1);
+            await CreatePayment(new Payment
+            {
+                Name = "Test payment",
+                AddressId = 1,
+                ScheduledAmount = 100,
+                ScheduledDate = DateTime.Today.AddDays(30)
+            });
+            await GetAllPaymentesForAddress(2);
             var before = _payments.Length;
 
             // Act
-            var response = await RemovedPayment(2);
+            var response = await RemovedPayment(1);
             await GetAllPaymentesForAddress(1);
             var after = _payments.Length;
 
@@ -162,7 +175,7 @@ namespace LendLease.Tests
         public async Task ReturnPaymentForAddress()
         {
             // Act
-            var response = await GetAllPaymentesForAddress(1, 1);
+            var response = await GetAllPaymentForAddress(1, 1);
 
             // Assert
             Assert.NotNull(response.Content);

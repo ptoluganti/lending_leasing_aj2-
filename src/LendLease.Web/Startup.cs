@@ -2,8 +2,11 @@
 using LendLease.Data;
 using LendLease.Interfaces;
 using LendLease.Models;
+using LendLease.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,15 +31,20 @@ namespace LendLease.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add EF services to the services container.
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
 
-            services.AddMvc(options => {
-                                           options.RespectBrowserAcceptHeader = true; // false by default
+            services.AddMvc(options => { options.RespectBrowserAcceptHeader = true; // false by default
             });
 
+            //Resolve dependency injection
+            services.AddSingleton<ApplicationDbContext, ApplicationDbContext>();
+            services.AddSingleton<IViewModelService, ViewModelService>();
+            services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
-            services.AddSingleton<IPaymentRepository, PaymentRepository>(); 
+            services.AddSingleton<IPaymentRepository, PaymentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,21 +52,7 @@ namespace LendLease.Web
         {
             if (env.IsEnvironment("Test"))
             {
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseInMemoryDatabase();
-                using (var context = new ApplicationDbContext(optionsBuilder.Options))
-                {
-                    context.Customers.Add(new Customer {Name = "Test Customer 1"});
-                    context.Addresses.Add(new Address {Name = "Address 1", CustomerId = 1});
-                    context.Payments.Add(new Payment
-                    {
-                        Name = "Payment 1",
-                        AddressId = 1,
-                        ScheduledAmount = 100,
-                        ScheduledDate = DateTime.Today.AddDays(30)
-                    });
-                    context.SaveChanges();
-                }
+               
             }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));

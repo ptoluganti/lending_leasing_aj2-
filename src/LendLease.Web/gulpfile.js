@@ -37,7 +37,7 @@ paths.fonts = "./node_modules/startbootstrap-sb-admin-2/bower_components/font-aw
 
 paths.jsDest = paths.webroot + "lib";
 paths.cssDest = paths.webroot + "css";
-paths.fontDest = paths.webroot + "css/fonts";
+paths.fontDest = paths.webroot + "fonts";
 
 gulp.task("min:js", function () {
     return gulp.src([paths.jqueryJs, paths.raphaelJs, paths.morrisJs, paths.bootstrapJs, paths.jquerydataTablesJs, paths.dataTablesbootstrapJs])
@@ -86,15 +86,27 @@ gulp.task('typescript', function () {
     return gulp
       .src([
           'js/site.js',
-          "js/app.component.js",
-          "js/customer/customercomponent.js",
-          "js/customer/tilecomponent.js",
-          "js/displaytemplate/app.displaytemplatecomponent.js"
+          "js/app.component.js"
       ])
       .pipe(gulp.dest('wwwroot/js'));
 });
+gulp.task('typescript:customer', function () {
+    return gulp
+      .src([
+          "js/customer/customercomponent.js",
+          "js/customer/tilecomponent.js"
+      ])
+      .pipe(gulp.dest('wwwroot/js/customer'));
+});
+gulp.task('typescript:displaytemplate', function () {
+    return gulp
+      .src([
+          "js/displaytemplate/app.displaytemplatecomponent.js"
+      ])
+      .pipe(gulp.dest('wwwroot/js/displaytemplate'));
+});
 
 
-gulp.task('default', ['copylibs', 'typescript']);
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task('default', ['copylibs', 'typescript', 'typescript:customer', 'typescript:displaytemplate']);
+//gulp.task("min", ["min:js", "min:css"]);
 gulp.task("copy", ["copy:js", "copy:css", "copy:fonts"]);

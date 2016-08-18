@@ -14,13 +14,14 @@ namespace LendLease.Web.Controllers.Api
             _addressRepository = addressRepository;
         }
 
-        [HttpGet("customer/{id}", Name = "GetCustomerAddress")]
+        [HttpGet("customer/{id:int}", Name = "GetCustomerAddress")]
+        [Produces(typeof(Address[]))]
         public IActionResult GetAll(int id)
         {
             return new ObjectResult(_addressRepository.GetAll(id));
         }
 
-        [HttpGet("{id}/customer/{cid}", Name = "GetAddress")]
+        [HttpGet("{id:int}/customer/{cid:int}", Name = "GetAddress")]
         public IActionResult GetById(int id, int cid)
         {
             var item = _addressRepository.Find(cid, id);
@@ -38,11 +39,17 @@ namespace LendLease.Web.Controllers.Api
             {
                 return BadRequest();
             }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _addressRepository.Add(item);
             return CreatedAtRoute("GetAddress", new { id = item.Id, cid = item.CustomerId }, item);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] Address item)
         {
             if (item == null || item.Id != id)
@@ -60,7 +67,7 @@ namespace LendLease.Web.Controllers.Api
             return new NoContentResult();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:int}")]
         public IActionResult Update([FromBody] Address item, int id)
         {
             if (item == null)
@@ -80,7 +87,7 @@ namespace LendLease.Web.Controllers.Api
             return new NoContentResult();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
             var address = _addressRepository.Find(id);

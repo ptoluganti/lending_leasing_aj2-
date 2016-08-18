@@ -14,12 +14,13 @@ namespace LendLease.Web.Controllers.Api
             _customerRepository = customerRepository;
         }
 
+        [Produces(typeof(Customer[]))]
         public IActionResult GetAll()
         {
             return new ObjectResult(_customerRepository.GetAll());
         }
 
-        [HttpGet("{id}", Name = "GetCustomer")]
+        [HttpGet("{id:int}", Name = "GetCustomer")]
         public IActionResult GetById(int id)
         {
             var item = _customerRepository.Find(id);
@@ -37,11 +38,17 @@ namespace LendLease.Web.Controllers.Api
             {
                 return BadRequest();
             }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _customerRepository.Add(item);
             return CreatedAtRoute("GetCustomer", new {id = item.Id}, item);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] Customer item)
         {
             if (item == null || item.Id != id)
@@ -59,7 +66,7 @@ namespace LendLease.Web.Controllers.Api
             return new NoContentResult();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:int}")]
         public IActionResult Update([FromBody] Customer item, int id)
         {
             if (item == null)

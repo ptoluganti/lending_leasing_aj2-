@@ -14,16 +14,17 @@ namespace LendLease.Web.Controllers.Api
             _paymentRepository = paymentRepository;
         }
 
-        [HttpGet("address/{id}", Name = "GetAddressPayment")]
+        [HttpGet("address/{id:int}", Name = "GetAddressPayment")]
+        [Produces(typeof(Payment[]))]
         public IActionResult GetAll(int id)
         {
             return new ObjectResult(_paymentRepository.GetAll(id));
         }
 
-        [HttpGet("{id}/address/{cid}", Name = "GetPayment")]
-        public IActionResult GetById(int id, int cid)
+        [HttpGet("{id:int}/address/{aid:int}", Name = "GetPayment")]
+        public IActionResult GetById(int id, int aid)
         {
-            var item = _paymentRepository.Find(cid, id);
+            var item = _paymentRepository.Find(aid, id);
             if (item == null)
             {
                 return NotFound();
@@ -38,11 +39,17 @@ namespace LendLease.Web.Controllers.Api
             {
                 return BadRequest();
             }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _paymentRepository.Add(item);
-            return CreatedAtRoute("GetPayment", new { id = item.Id, cid = item.AddressId }, item);
+            return CreatedAtRoute("GetPayment", new { id = item.Id, aid = item.AddressId }, item);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public IActionResult Update(int id, [FromBody] Payment item)
         {
             if (item == null || item.Id != id)
@@ -60,7 +67,7 @@ namespace LendLease.Web.Controllers.Api
             return new NoContentResult();
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch("{id:int}")]
         public IActionResult Update([FromBody] Payment item, int id)
         {
             if (item == null)
@@ -80,7 +87,7 @@ namespace LendLease.Web.Controllers.Api
             return new NoContentResult();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
             var payment = _paymentRepository.Find(id);
