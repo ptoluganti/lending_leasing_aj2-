@@ -26,4 +26,4 @@
 /src/LendLease.Interfaces/obj/Release/netcoreapp1.0
 /src/LendLease.Models/bin/Release/netcoreapp1.0
 /src/LendLease.Models/obj/Release/netcoreapp1.0
-/src/LendLease.Web/Properties/PublishProfiles
+/src/LendLease.Web/Properties/PublishProfiles/lendleaseapp - Web Deploy-publish.ps1
