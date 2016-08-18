@@ -20,3 +20,10 @@
 /src/LendLease.Models/obj/Debug
 /src/LendLease.Web/bin
 /src/LendLease.Web/obj/Release/netcoreapp1.0
+/src/LendLease.Data/bin/Release/netcoreapp1.0
+/src/LendLease.Data/obj/Release/netcoreapp1.0
+/src/LendLease.Interfaces/bin/Release/netcoreapp1.0
+/src/LendLease.Interfaces/obj/Release/netcoreapp1.0
+/src/LendLease.Models/bin/Release/netcoreapp1.0
+/src/LendLease.Models/obj/Release/netcoreapp1.0
+/src/LendLease.Web/Properties/PublishProfiles
